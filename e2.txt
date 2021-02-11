@@ -1,0 +1,48 @@
+//2
+#include <stdio.h>
+#include <string.h>
+void main()
+{
+  int i, j, dataLength, polyLength;
+  char data[100], poly[30], temp[30], quot[100], rem[30], poly1[30];
+  printf("Enter Data: ");
+  scanf("%s", data);
+  do
+  {
+    printf("Enter polynomial: ");
+    scanf("%s", poly);
+    polyLength = strlen(poly);
+  } while (!(poly[0] == '1' && poly[polyLength - 1] == '1'));
+  dataLength = strlen(data);
+  strcpy(poly1, poly);
+  for (i = 0; i < polyLength - 1; i++)
+  {
+    data[dataLength + i] = '0';
+  }
+  for (i = 0; i < polyLength; i++)
+    temp[i] = data[i];
+  for (i = 0; i < dataLength; i++)
+  {
+    quot[i] = temp[0];
+    if (quot[i] == '0')
+      for (j = 0; j < polyLength; j++)
+        poly[j] = '0';
+    else
+      for (j = 0; j < polyLength; j++)
+        poly[j] = poly1[j];
+    for (j = polyLength - 1; j > 0; j--)
+    {
+      if (temp[j] == poly[j])
+        rem[j - 1] = '0';
+      else
+        rem[j - 1] = '1';
+    }
+    rem[polyLength - 1] = data[i + polyLength];
+    strcpy(temp, rem);
+  }
+  strcpy(rem, temp);
+  for (i = 0; i < dataLength; i++)
+    printf("%c", data[i]);
+  for (i = 0; i < polyLength - 1; i++)
+    printf("%c", rem[i]);
+}
