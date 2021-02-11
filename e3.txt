@@ -1,0 +1,68 @@
+//3
+
+#include <limits.h> 
+#include <stdio.h> 
+int minDistance(int dist[], int sptSet[],int V) 
+{ 
+    int min = INT_MAX, min_index,v; 
+  
+    for ( v = 0; v < V; v++) 
+        if (sptSet[v] == 0 && dist[v] <= min) 
+            min = dist[v], min_index = v; 
+  
+    return min_index; 
+} 
+void printPath(int path[], int j) 
+{ 
+      
+    if (path[j] == - 1) 
+        return; 
+  
+    printPath(path, path[j]); 
+  
+    printf("-->%c", j+'A'); 
+} 
+void dijkstra(int V, int src,int dest,int graph[][V]) 
+{ 
+    int dist[V],path[V],count,v,i;
+    path[0]=-1;
+    int sptSet[V];
+	for (i = 0; i < V; i++) 
+        {
+            dist[i] = INT_MAX; sptSet[i] = 0;
+        }
+        
+    dist[src] = 0; 
+    for (count = 0; count < V - 1; count++) { 
+        int u = minDistance(dist, sptSet,V); 
+        sptSet[u] = 1; 
+          for (v = 0; v < V; v++) 
+            if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]) 
+			    {
+			    dist[v] = dist[u] + graph[u][v];
+			    path[v] = u;				
+			    }
+    } 	
+    printf("\nThe distance is : %d ",dist[src]);
+    printf("\nThe path is : %c",src+'A');
+    printPath(path,dest);
+} 
+  
+int main() 
+{ 
+	int n;
+    printf("Enter the number of nodes : ");
+    scanf("%d",&n);
+    printf("Enter the graph in matrix form : \n");
+    int mat[n][n],src,dest,i,j;
+    for(i=0;i<n;i++)
+  	for(j=0;j<n;j++)
+  	scanf("%d",&mat[i][j]);
+  	
+  	printf("\nEnter the source vertex : ");
+  	scanf("%d",&src);
+  	printf("\nEnter the destination vertex : ");
+  	scanf("%d",&dest);
+  	dijkstra(n,src-1,dest-1,mat);
+    return 0; 
+} 
